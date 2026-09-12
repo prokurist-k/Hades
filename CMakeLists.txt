@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.28)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+project(Hades CXX)
+add_subdirectory(Engine)
+add_subdirectory(Sandbox)
