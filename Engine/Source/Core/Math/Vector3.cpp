@@ -161,7 +161,7 @@ bool CVector3::IsCollinearTo(const CVector3& vec) const
 {
     if (IsNearlyZero(vec) || IsNearlyZero(*this))
     {
-        return true;
+        return false;
     }
 
     return CrossProduct(vec).LengthSquared() < (CMath::EPSILON_FLOAT * CMath::EPSILON_FLOAT);

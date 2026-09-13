@@ -13,6 +13,6 @@ const float CMath::SQRT_THREE = 1.7320508075688772935274463415059f;
 const float CMath::RAD2DEG = 180.f / PI;
 const float CMath::DEG2RAD = PI / 180.f;
 
-const float CMath::EPSILON_FLOAT = (1e-8f);
-const double CMath::EPSILON_DOUBLE = (1e-8);
+const float CMath::EPSILON_FLOAT = (1e-6f);
+const double CMath::EPSILON_DOUBLE = (1e-9);
 }
