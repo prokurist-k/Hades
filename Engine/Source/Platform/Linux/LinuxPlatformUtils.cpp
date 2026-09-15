@@ -4,7 +4,7 @@
 #include <unistd.h>
 namespace Hades
 {
-std::string CPlatform::GetExecutablePath()
+std::string CPlatformUtils::GetExecutablePath()
 {
     char buffer[PATH_MAX];
     ssize_t len = readlink("/proc/self/exe", buffer, sizeof(buffer) - 1);

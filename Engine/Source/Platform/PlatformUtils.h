@@ -3,7 +3,7 @@
 #include <string>
 namespace Hades
 {
-class CPlatform
+class CPlatformUtils
 {
 public:
     static std::string GetExecutablePath();

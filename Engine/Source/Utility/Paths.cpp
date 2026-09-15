@@ -11,7 +11,7 @@ std::string CPaths::game_directory;
 
 bool CPaths::Initialize()
 {
-    const std::string executable_path = CPlatform::GetExecutablePath();
+    const std::string executable_path = CPlatformUtils::GetExecutablePath();
 
     std::filesystem::path current_path = std::filesystem::path(executable_path).parent_path();
 
