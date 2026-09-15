@@ -25,3 +25,7 @@ bool CEditor::InitializeEngine()
 
     return true;
 }
+
+void CEditor::Tick()
+{
+}

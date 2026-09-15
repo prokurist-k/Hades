@@ -8,5 +8,7 @@ public:
 
 private:
     bool InitializeEngine();
+    void Tick();
+
     std::unique_ptr<CEditorMainWindow> editor_main_window;
 };
