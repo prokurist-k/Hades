@@ -1,5 +1,7 @@
 #include "../PlatformUtils.h"
 
+#include <cstdint>
+#include <ctime>
 #include <limits.h>
 #include <unistd.h>
 namespace Hades
@@ -15,4 +17,12 @@ std::string CPlatformUtils::GetExecutablePath()
     buffer[len] = '\0';
     return std::string(buffer);
 }
+
+uint64_t CPlatformUtils::GetTicks()
+{
+    struct timespec tp;
+    clock_gettime(CLOCK_MONOTONIC, &tp);
+    return tp.tv_sec * NANOSECONDS_PER_SECOND + tp.tv_nsec;
+}
+
 }

@@ -4,11 +4,8 @@
 class CEditor
 {
 public:
-    bool Initialize();
+    bool Initialize(Hades::CEngineLoop* in_engine_loop);
 
 private:
-    bool InitializeEngine();
-    void Tick();
-
     std::unique_ptr<CEditorMainWindow> editor_main_window;
 };

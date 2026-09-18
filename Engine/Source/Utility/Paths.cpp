@@ -34,8 +34,7 @@ bool CPaths::Initialize()
 
     if (root_directory.empty())
     {
-        // HADES_LOG(Fatal, "Could not find engine root directory (expected to find subfolders '%s' and '%s').", engine_dir_name.c_str(), game_dir_name.c_str());
-        root_directory = ""; // platform->GetWorkingDirectory(); // Fallback
+        root_directory = "";
         return false;
     }
 
