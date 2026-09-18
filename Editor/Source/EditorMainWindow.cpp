@@ -1,9 +1,26 @@
 #include "EditorMainWindow.h"
 #include "Viewport/ViewportWidget.h"
 #include <qmainwindow.h>
+#include <qmenu.h>
+#include <qmenubar.h>
 #include <qobjectdefs.h>
 #include <qtimer.h>
 #include <qwidget.h>
+
+void SMenuBar::Initalize(QMainWindow* main_window)
+{
+    menu_bar = new QMenuBar(main_window);
+    main_window->setMenuBar(menu_bar);
+
+    menu_bar_file = new QMenu("&File");
+    menu_bar_file->addAction("New");
+    menu_bar_file->addAction("Open");
+    menu_bar_file->addAction("Save");
+    menu_bar_file->addSeparator();
+    menu_bar_file->addAction("Exit");
+
+    menu_bar->addMenu(menu_bar_file);
+}
 
 CEditorMainWindow::CEditorMainWindow(Hades::CEngineLoop* in_engine_loop, QWidget* parent)
     : QMainWindow(parent)
@@ -14,6 +31,8 @@ CEditorMainWindow::CEditorMainWindow(Hades::CEngineLoop* in_engine_loop, QWidget
 
     viewport = new CViewportWidget(this);
     setCentralWidget(viewport);
+
+    menu_bar.Initalize(this);
 
     tick_timer = new QTimer(this);
     connect(tick_timer, &QTimer::timeout, this, &CEditorMainWindow::OnEngineTick);

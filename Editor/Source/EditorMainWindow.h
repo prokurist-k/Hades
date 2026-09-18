@@ -3,9 +3,18 @@
 #include <qmainwindow.h>
 #include <qobjectdefs.h>
 
+struct SMenuBar
+{
+    void Initalize(QMainWindow* main_window);
+
+    class QMenuBar* menu_bar;
+    class QMenu* menu_bar_file;
+};
+
 class CEditorMainWindow : public QMainWindow
 {
     Q_OBJECT
+
 public:
     CEditorMainWindow(Hades::CEngineLoop* in_engine_loop, class QWidget* parent = nullptr);
     virtual ~CEditorMainWindow();
@@ -18,4 +27,6 @@ private:
     Hades::CEngineLoop* engine_loop;
 
     QTimer* tick_timer;
+
+    SMenuBar menu_bar;
 };
