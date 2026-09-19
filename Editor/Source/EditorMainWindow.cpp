@@ -1,23 +1,46 @@
+#include "Commands/CommandManager.h"
+#include "Editor.h"
 #include "EditorMainWindow.h"
+#include "Source/Core/Logging/Log.h"
 #include "Viewport/ViewportWidget.h"
+#include <qaction.h>
 #include <qmainwindow.h>
 #include <qmenu.h>
 #include <qmenubar.h>
+#include <qobject.h>
 #include <qobjectdefs.h>
 #include <qtimer.h>
 #include <qwidget.h>
+
+CMenu::CMenu(const QString& title, QWidget* parent)
+    : QMenu(title, parent)
+{
+}
+
+QAction* CMenu::AddCommand(const std::string& name)
+{
+    QAction* action = CEditor::Get().GetCommandManager()->GetCommand(name);
+    if (action)
+    {
+        addAction(action);
+        return action;
+    }
+
+    HADES_LOG(Error, "Unknown command added: %s", name.c_str())
+    return nullptr;
+}
 
 void SMenuBar::Initalize(QMainWindow* main_window)
 {
     menu_bar = new QMenuBar(main_window);
     main_window->setMenuBar(menu_bar);
 
-    menu_bar_file = new QMenu("&File");
-    menu_bar_file->addAction("New");
-    menu_bar_file->addAction("Open");
-    menu_bar_file->addAction("Save");
+    menu_bar_file = new CMenu("&File", menu_bar);
+    menu_bar_file->AddCommand("file.new");
+    menu_bar_file->AddCommand("file.open");
+    menu_bar_file->AddCommand("file.save");
     menu_bar_file->addSeparator();
-    menu_bar_file->addAction("Exit");
+    menu_bar_file->AddCommand("file.exit");
 
     menu_bar->addMenu(menu_bar_file);
 }
@@ -28,6 +51,8 @@ CEditorMainWindow::CEditorMainWindow(Hades::CEngineLoop* in_engine_loop, QWidget
 {
     setWindowTitle("Hades Editor");
     resize(1280, 720);
+
+    CEditor::Get().RegisterMenuBarCommands(this);
 
     viewport = new CViewportWidget(this);
     setCentralWidget(viewport);

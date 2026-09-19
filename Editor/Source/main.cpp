@@ -21,8 +21,7 @@ int main(int argc, char* argv[])
     }
     HADES_LOG(Log, "Editor Engine Loop initialized")
 
-    CEditor editor;
-    if (!editor.Initialize(&engine_loop))
+    if (!CEditor::Get().Initialize(&engine_loop))
     {
         engine_loop.Shutdown();
         return 1;
@@ -31,5 +30,8 @@ int main(int argc, char* argv[])
 
     int exit_code = app.exec();
     engine_loop.Shutdown();
+
+    CEditor::Get().Shutdown();
+
     return exit_code;
 }
