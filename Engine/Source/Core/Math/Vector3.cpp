@@ -1,6 +1,9 @@
 #include "../../Core.h"
+#include "Source/Core/Math/HadesMath.h"
 #include "Vector3.h"
+#include <algorithm>
 #include <cmath>
+#include <cstdlib>
 #include <format>
 
 namespace Hades
@@ -28,6 +31,13 @@ namespace Hades
 /*static*/ float CVector3::Distance(const CVector3& vec1, const CVector3& vec2)
 {
     return CMath::Sqrt(DistanceSquared(vec1, vec2));
+}
+
+CVector3::CVector3()
+    : x(0.0f)
+    , y(0.0f)
+    , z(0.0f)
+{
 }
 
 CVector3::CVector3(float in_x, float in_y, float in_z)
@@ -78,7 +88,7 @@ CVector3 CVector3::operator-(const float subtrahend) const
 
 bool CVector3::operator==(const CVector3& vec) const
 {
-    return (CMath::IsNearlyEqual(x, vec.x) && CMath::IsNearlyEqual(y, vec.y) && CMath::IsNearlyEqual(z, vec.z));
+    return x == vec.x && y == vec.y && z == vec.z;
 }
 
 bool CVector3::operator!=(const CVector3& vec) const
@@ -133,7 +143,7 @@ float CVector3::LengthSquared() const
 
 float CVector3::Length() const
 {
-    return CMath::Sqrt(LengthSquared());
+    return static_cast<float>(std::hypot(x, y, z));
 }
 
 float CVector3::ScalarProduct(const CVector3& vec) const
@@ -148,13 +158,29 @@ CVector3 CVector3::CrossProduct(const CVector3& other) const
 
 bool CVector3::Normalize()
 {
-    const float length = Length();
-    if (length > 0.f)
+    if (!std::isfinite(x) || !std::isfinite(y) || !std::isfinite(z))
     {
-        *this /= length;
-        return true;
+        HADES_LOG(Warning, "Cannot normalize vector: component is NaN or infinite.")
+        return false;
     }
-    return false;
+
+    const float max_abs_component = std::max(std::max(std::abs(x), std::abs(y)), std::abs(z));
+    if (max_abs_component == 0.0f)
+    {
+        HADES_LOG(Warning, "Cannot normalize zero vector.")
+        return false;
+    }
+
+    CVector3 v = *this / max_abs_component;
+    const float length = v.Length();
+    CVector3 normalized = v / length;
+    *this = normalized;
+    return true;
+}
+
+bool CVector3::IsNormalized() const
+{
+    return (std::abs(1.f - LengthSquared()) < NORMALIZED_TOLERANCE);
 }
 
 bool CVector3::IsCollinearTo(const CVector3& vec) const
@@ -177,4 +203,29 @@ std::string CVector3::ToString() const
 {
     return std::format("({}, {}, {})", x, y, z);
 }
+
+CVector3 CVector3::Reflect(const CVector3& normal) const
+{
+    if (!normal.IsNormalized())
+    {
+        HADES_LOG(Warning, "Reflect called with a non-normalized normal vector.")
+    }
+
+    const float d = 2 * ScalarProduct(normal);
+    return *this - (normal * d);
+}
+
+CVector3 CVector3::Project(const CVector3& target) const
+{
+    if (IsNearlyZero(target))
+    {
+        HADES_LOG(Warning, "Project called with a zero target vector.")
+        return zero_vector;
+    }
+
+    const float d = ScalarProduct(target);
+    const float q = d / target.LengthSquared();
+    return target * q;
+}
+
 }

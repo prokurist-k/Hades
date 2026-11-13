@@ -5,20 +5,15 @@
 
 namespace Hades
 {
+
+#define NORMALIZED_TOLERANCE 0.01f
+
 class CVector3
 {
 public:
-    union
-    {
-        struct
-        {
-            float x;
-            float y;
-            float z;
-        };
-
-        float xyz[3];
-    };
+    float x;
+    float y;
+    float z;
 
     static const CVector3 zero_vector;
 
@@ -28,7 +23,7 @@ public:
     static float DistanceSquared(const CVector3& vec1, const CVector3& vec2);
     static float Distance(const CVector3& vec1, const CVector3& vec2);
 
-    CVector3() = default;
+    CVector3();
     CVector3(float in_x, float in_y, float in_z);
     CVector3(float in_value);
 
@@ -58,8 +53,12 @@ public:
     CVector3 CrossProduct(const CVector3& other) const;
 
     bool Normalize();
+    bool IsNormalized() const;
 
     bool IsCollinearTo(const CVector3& vec) const;
     bool IsOrthogonalTo(const CVector3& vec) const;
+
+    CVector3 Reflect(const CVector3& normal) const;
+    CVector3 Project(const CVector3& target) const;
 };
 }

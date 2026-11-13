@@ -206,13 +206,100 @@ TEST(Vector3, CrossProduct)
     EXPECT_FLOAT_EQ(c.z, result.z);
 }
 
-TEST(Vector3, Normalize)
+TEST(Vector3, NormalizeRegularVector)
 {
-    Hades::CVector3 a(1.0f, 2.0f, 3.0f);
+    Hades::CVector3 a(3.0f, 4.0f, 0.0f);
     const bool result = a.Normalize();
 
-    EXPECT_FLOAT_EQ(a.Length(), 1.0f);
     EXPECT_TRUE(result);
+    EXPECT_FLOAT_EQ(a.Length(), 1.0f);
+    EXPECT_FLOAT_EQ(a.x, 0.6f);
+    EXPECT_FLOAT_EQ(a.y, 0.8f);
+    EXPECT_FLOAT_EQ(a.z, 0.0f);
+}
+
+TEST(Vector3, NormalizeSmallNumber)
+{
+    Hades::CVector3 a(1e-30f, 0, 0);
+    const bool result = a.Normalize();
+
+    EXPECT_TRUE(result);
+    EXPECT_FLOAT_EQ(a.Length(), 1.0f);
+    EXPECT_FLOAT_EQ(a.x, 1.0f);
+    EXPECT_FLOAT_EQ(a.y, 0.0f);
+    EXPECT_FLOAT_EQ(a.z, 0.0f);
+}
+
+TEST(Vector3, NormalizeNegativeSmallNumber)
+{
+    Hades::CVector3 a(-1e-30f, 0, 0);
+    const bool result = a.Normalize();
+
+    EXPECT_TRUE(result);
+    EXPECT_FLOAT_EQ(a.Length(), 1.0f);
+    EXPECT_FLOAT_EQ(a.x, -1.0f);
+    EXPECT_FLOAT_EQ(a.y, 0.0f);
+    EXPECT_FLOAT_EQ(a.z, 0.0f);
+}
+
+TEST(Vector3, NormalizeSmallDiagonalVector)
+{
+    Hades::CVector3 a(1e-30f, 1e-30f, 0);
+    const bool result = a.Normalize();
+
+    EXPECT_TRUE(result);
+    EXPECT_FLOAT_EQ(a.Length(), 1.0f);
+    EXPECT_NEAR(a.x, 0.70710678f, 1e-5f);
+    EXPECT_NEAR(a.y, 0.70710678f, 1e-5f);
+    EXPECT_NEAR(a.z, 0.0f, 1e-6f);
+}
+
+TEST(Vector3, NormalizeBigNumber)
+{
+    Hades::CVector3 a(1e30f, 0, 0);
+    const bool result = a.Normalize();
+
+    EXPECT_TRUE(result);
+    EXPECT_FLOAT_EQ(a.Length(), 1.0f);
+    EXPECT_FLOAT_EQ(a.x, 1.0f);
+    EXPECT_FLOAT_EQ(a.y, 0.0f);
+    EXPECT_FLOAT_EQ(a.z, 0.0f);
+}
+
+TEST(Vector3, NormalizeNegativeBigNumber)
+{
+    Hades::CVector3 a(-1e30f, 0, 0);
+    const bool result = a.Normalize();
+
+    EXPECT_TRUE(result);
+    EXPECT_FLOAT_EQ(a.Length(), 1.0f);
+    EXPECT_FLOAT_EQ(a.x, -1.0f);
+    EXPECT_FLOAT_EQ(a.y, 0.0f);
+    EXPECT_FLOAT_EQ(a.z, 0.0f);
+}
+
+TEST(Vector3, NormalizeBigDiagonalVector)
+{
+    Hades::CVector3 a(1e30f, 1e30f, 0);
+    const bool result = a.Normalize();
+
+    EXPECT_TRUE(result);
+    EXPECT_FLOAT_EQ(a.Length(), 1.0f);
+    EXPECT_NEAR(a.x, 0.70710678f, 1e-5f);
+    EXPECT_NEAR(a.y, 0.70710678f, 1e-5f);
+    EXPECT_NEAR(a.z, 0.0f, 1e-6f);
+}
+
+TEST(Vector3, NormalizeMixedDiagonalVector)
+{
+    Hades::CVector3 a(-1e30f, 1e30f, 0);
+    const bool result = a.Normalize();
+
+    EXPECT_TRUE(result);
+    EXPECT_FLOAT_EQ(a.Length(), 1.0f);
+    EXPECT_NEAR(a.x, -0.70710678f, 1e-5f);
+    EXPECT_NEAR(a.y, 0.70710678f, 1e-5f);
+    EXPECT_NEAR(a.z, 0.0f, 1e-6f);
 }
 
 TEST(Vector3, NormalizeZeroVector)
@@ -221,6 +308,31 @@ TEST(Vector3, NormalizeZeroVector)
     const bool result = a.Normalize();
 
     EXPECT_FALSE(result);
+    EXPECT_FLOAT_EQ(a.x, 0.0f);
+    EXPECT_FLOAT_EQ(a.y, 0.0f);
+    EXPECT_FLOAT_EQ(a.z, 0.0f);
+}
+
+TEST(Vector3, NormalizeNaN)
+{
+    Hades::CVector3 a(3.0f, 4.0f, std::numeric_limits<float>::quiet_NaN());
+    const bool result = a.Normalize();
+
+    EXPECT_FALSE(result);
+    EXPECT_FLOAT_EQ(a.x, 3.0f);
+    EXPECT_FLOAT_EQ(a.y, 4.0f);
+    EXPECT_TRUE(std::isnan(a.z));
+}
+
+TEST(Vector3, NormalizeInfinity)
+{
+    Hades::CVector3 a(3.0f, 4.0f, std::numeric_limits<float>::infinity());
+    const bool result = a.Normalize();
+
+    EXPECT_FALSE(result);
+    EXPECT_FLOAT_EQ(a.x, 3.0f);
+    EXPECT_FLOAT_EQ(a.y, 4.0f);
+    EXPECT_FLOAT_EQ(a.z, std::numeric_limits<float>::infinity());
 }
 
 TEST(Vector3, IsCollinearToMultiple)
