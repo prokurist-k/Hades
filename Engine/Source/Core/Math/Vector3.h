@@ -6,8 +6,6 @@
 namespace Hades
 {
 
-#define NORMALIZED_TOLERANCE 0.01f
-
 class CVector3
 {
 public:

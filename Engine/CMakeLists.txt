@@ -3,7 +3,9 @@ add_library(HadesEngine STATIC
     Source/Core/Logging/Log.cpp
     Source/Core/Logging/Sink.cpp
     Source/Core/Math/HadesMath.cpp
+    Source/Core/Math/Vector2.cpp
     Source/Core/Math/Vector3.cpp
+    Source/Core/Math/Vector4.cpp
     Source/Engine/Engine.cpp
     Source/EngineLoop/EngineLoop.cpp
     Source/Platform/Linux/LinuxPlatformUtils.cpp

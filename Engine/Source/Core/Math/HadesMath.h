@@ -21,6 +21,8 @@ public:
     static const float EPSILON_FLOAT;
     static const double EPSILON_DOUBLE;
 
+    static const float NORMALIZED_TOLERANCE;
+
     static bool IsNearlyEqual(const float a, const float b, const float tolerance = EPSILON_FLOAT)
     {
         return std::abs(a - b) <= tolerance;

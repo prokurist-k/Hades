@@ -2,7 +2,6 @@
 #include "Source/Core/Math/HadesMath.h"
 #include "Vector3.h"
 #include <algorithm>
-#include <cmath>
 #include <cstdlib>
 #include <format>
 
@@ -180,7 +179,7 @@ bool CVector3::Normalize()
 
 bool CVector3::IsNormalized() const
 {
-    return (std::abs(1.f - LengthSquared()) < NORMALIZED_TOLERANCE);
+    return (std::abs(1.f - LengthSquared()) < CMath::NORMALIZED_TOLERANCE);
 }
 
 bool CVector3::IsCollinearTo(const CVector3& vec) const
