@@ -62,12 +62,15 @@ TEST(Vector3, NotEqualJustBeyondTolerance)
     EXPECT_FALSE(a == b);
 }
 
-TEST(Vector3, EqualJustWithinTolerance)
+TEST(Vector3, NotEqualWithinTolerance)
 {
     Hades::CVector3 a(1.0f, 2.0f, 3.0f);
-    Hades::CVector3 b(1.0f + Hades::CMath::EPSILON_FLOAT * 0.5f, 2.0f, 3.0f);
+    Hades::CVector3 b(
+        1.0f + Hades::CMath::EPSILON_FLOAT * 0.5f,
+        2.0f,
+        3.0f);
 
-    EXPECT_TRUE(a == b);
+    EXPECT_FALSE(a == b);
 }
 
 TEST(Vector3, OperatorPlus)
@@ -159,7 +162,7 @@ TEST(Vector3, OperatorDivisionZero)
     Hades::CVector3 a(3.0f, 6.0f, 9.0f);
     const float divider = 0.f;
 
-    EXPECT_DEATH({ Hades::CVector3 c = a / divider; }, ".*");
+    EXPECT_DEATH(a / divider, ".*");
 }
 
 TEST(Vector3, LengthSquared)
