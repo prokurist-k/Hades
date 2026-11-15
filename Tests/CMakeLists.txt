@@ -8,7 +8,8 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-file(GLOB_RECURSE HADES_TEST_SOURCES CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+file(GLOB_RECURSE HADES_TEST_SOURCES CONFIGURE_DEPENDS
+${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 
 add_executable(HadesTests ${HADES_TEST_SOURCES})
 
