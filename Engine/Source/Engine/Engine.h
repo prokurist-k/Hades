@@ -1,6 +1,9 @@
 #pragma once
 
+#include "../Renderer/Renderer.h"
 #include "Source/Core/Timer.h"
+#include "Source/Platform/Window.h"
+#include <memory>
 namespace Hades
 {
 class CEngine
@@ -10,6 +13,11 @@ public:
     void Shutdown();
 
     void Tick();
+
+    IWindow& GetWindow() const
+    {
+        return *window;
+    }
 
     const CTimer& GetTimer() const
     {
@@ -21,5 +29,7 @@ private:
     void Render();
 
     CTimer timer;
+    std::unique_ptr<IWindow> window;
+    std::unique_ptr<IRenderer> renderer;
 };
 }

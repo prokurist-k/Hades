@@ -1,3 +1,4 @@
+#include "../Platform/Window.h"
 #include "EngineLoop.h"
 #include "Source/Engine/Engine.h"
 #include <memory>
@@ -10,6 +11,10 @@ bool CEngineLoop::Initialize(const SEngineLoopParams& params)
     engine = std::make_unique<CEngine>();
     if (!engine->Initialize())
     {
+        engine.reset();
+        current_params.is_editor = false;
+        current_params.is_embedded = false;
+        is_running = false;
         return false;
     }
 
@@ -18,6 +23,7 @@ bool CEngineLoop::Initialize(const SEngineLoopParams& params)
 
 void CEngineLoop::Shutdown()
 {
+    is_running = false;
     if (engine)
     {
         engine->Shutdown();
@@ -31,8 +37,18 @@ void CEngineLoop::Run()
         return;
     }
 
+    engine->GetWindow().Show();
+
     while (is_running)
     {
+        engine->GetWindow().ProcessEvents();
+
+        if (!engine->GetWindow().IsOpen())
+        {
+            is_running = false;
+            break;
+        }
+
         Tick();
     }
 }

@@ -11,7 +11,15 @@ add_library(HadesEngine STATIC
     Source/Engine/Engine.cpp
     Source/EngineLoop/EngineLoop.cpp
     Source/Platform/Linux/LinuxPlatformUtils.cpp
+    Source/Platform/Linux/LinuxWindow.cpp
     Source/Utility/Paths.cpp
+)
+
+find_package(X11 REQUIRED)
+
+target_link_libraries(HadesEngine
+    PRIVATE
+        X11::X11
 )
 
 target_include_directories(HadesEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

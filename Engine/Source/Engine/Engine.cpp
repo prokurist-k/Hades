@@ -1,7 +1,10 @@
+#include "../Platform/Linux/LinuxWindow.h"
+#include "../Renderer/Vulkan/VulkanRenderer.h"
 #include "Engine.h"
 #include "Source/Core/Logging/Log.h"
 #include "Source/Core/Logging/Sink.h"
 #include "Source/Utility/Paths.h"
+#include <memory>
 
 namespace Hades
 {
@@ -17,11 +20,32 @@ bool CEngine::Initialize()
     CLogger::Get().RegisterSink(std::make_unique<Hades::CFileSink>());
     HADES_LOG(Log, "File sink registerd")
 
+    window = std::make_unique<CLinuxWindow>();
+    if (!window->Initialize())
+    {
+        HADES_LOG(Fatal, "Failed to initilaize window")
+        window.reset();
+        return false;
+    }
+
+    renderer = std::make_unique<CVulkanRenderer>();
+    if (!renderer->Initialize())
+    {
+        HADES_LOG(Fatal, "Failed to initilaize renderer")
+        renderer.reset();
+        return false;
+    }
+
     return true;
 }
 void CEngine::Shutdown()
 {
     HADES_LOG(Log, "Engine shutdown")
+    renderer->Shutdown();
+    renderer.reset();
+
+    window->Shutdown();
+    window.reset();
 }
 
 void CEngine::Tick()

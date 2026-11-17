@@ -17,6 +17,7 @@ int main(int argc, char* argv[])
     Hades::CEngineLoop engine_loop;
     if (!engine_loop.Initialize(params))
     {
+        HADES_LOG(Fatal, "Failed to initialize EngineLoop")
         return -1;
     }
     HADES_LOG(Log, "Editor Engine Loop initialized")

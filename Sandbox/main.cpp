@@ -1,30 +1,20 @@
 #include "../Engine/Source/Core/Logging/Log.h"
-#include "Source/Core/Logging/Sink.h"
-#include "Source/Core/Math/HadesMath.h"
-#include "Source/Core/Math/Vector3.h"
-#include "Source/Utility/Paths.h"
-#include <memory>
+#include "Source/EngineLoop/EngineLoop.h"
 
 int main(int argc, char* argv[])
 {
-    if (!Hades::CPaths::Initialize())
+    Hades::SEngineLoopParams params;
+    params.is_editor = false;
+    params.is_embedded = false;
+
+    Hades::CEngineLoop engine_loop;
+    if (!engine_loop.Initialize(params))
     {
-        return 1;
+        HADES_LOG(Fatal, "Failed to initialize EngineLoop")
+        return -1;
     }
-    Hades::CLogger::Get().RegisterSink(std::make_unique<Hades::CConsoleSink>());
-    Hades::CLogger::Get().RegisterSink(std::make_unique<Hades::CFileSink>());
-
-    HADES_LOG(Log, "Test");
-    HADES_LOG(Warning, "Test %i", 32);
-    HADES_LOG(Error, "Test %f", 64.32f);
-    HADES_LOG(Fatal, "Test %d", 34.0202f);
-    HADES_LOG(Log, "%s", "Test");
-
-    float result = Hades::CMath::Sqrt(-1.0f);
-    HADES_LOG(Log, "Result: %f, IsNaN: %d", result, std::isnan(result));
-
-    Hades::CVector3 v(1.0f, 2.0f, 3.0f);
-    v / 0.0f;
+    engine_loop.Run();
+    engine_loop.Shutdown();
 
     return 0;
 }
