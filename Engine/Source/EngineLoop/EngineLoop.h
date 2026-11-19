@@ -23,7 +23,5 @@ public:
 private:
     SEngineLoopParams current_params;
     std::unique_ptr<CEngine> engine;
-
-    bool is_running = false;
 };
 }

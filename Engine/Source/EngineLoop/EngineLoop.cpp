@@ -1,6 +1,7 @@
 #include "../Platform/Window.h"
 #include "EngineLoop.h"
 #include "Source/Engine/Engine.h"
+#include "Source/Globals.h"
 #include <memory>
 
 namespace Hades
@@ -14,16 +15,14 @@ bool CEngineLoop::Initialize(const SEngineLoopParams& params)
         engine.reset();
         current_params.is_editor = false;
         current_params.is_embedded = false;
-        is_running = false;
         return false;
     }
 
-    return is_running = true;
+    return true;
 }
 
 void CEngineLoop::Shutdown()
 {
-    is_running = false;
     if (engine)
     {
         engine->Shutdown();
@@ -39,16 +38,8 @@ void CEngineLoop::Run()
 
     engine->GetWindow().Show();
 
-    while (is_running)
+    while (!request_exit)
     {
-        engine->GetWindow().ProcessEvents();
-
-        if (!engine->GetWindow().IsOpen())
-        {
-            is_running = false;
-            break;
-        }
-
         Tick();
     }
 }

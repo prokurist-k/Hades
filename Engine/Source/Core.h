@@ -25,3 +25,5 @@
 #else
 #define HADES_ASSERT(x, ...)
 #endif
+
+#define UNUSED(x) (void)x;

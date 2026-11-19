@@ -1,4 +1,6 @@
 add_library(HadesEngine STATIC
+    Source/Globals.h
+    Source/Globals.cpp
     Source/Core/Timer.cpp
     Source/Core/Logging/Log.cpp
     Source/Core/Logging/Sink.cpp
@@ -10,6 +12,8 @@ add_library(HadesEngine STATIC
     Source/Core/Math/Vector4.cpp
     Source/Engine/Engine.cpp
     Source/EngineLoop/EngineLoop.cpp
+    Source/Platform/Keyboard.h
+    Source/Platform/Keyboard.cpp
     Source/Platform/Linux/LinuxPlatformUtils.cpp
     Source/Platform/Linux/LinuxWindow.cpp
     Source/Utility/Paths.cpp

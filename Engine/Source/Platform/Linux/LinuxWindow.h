@@ -2,7 +2,10 @@
 
 #include "../Window.h"
 #include <X11/Xlib.h>
+#include <vector>
 
+namespace Hades
+{
 class CLinuxWindow : public IWindow
 {
 public:
@@ -11,7 +14,7 @@ public:
 
     virtual void Show() override;
 
-    virtual void ProcessEvents() override;
+    virtual void ProcessEvents(std::vector<Event>& events) override;
     virtual bool IsOpen() const override;
 
 private:
@@ -20,3 +23,5 @@ private:
     bool is_open = false;
     Atom del_window;
 };
+
+}
