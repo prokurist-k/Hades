@@ -35,7 +35,7 @@ public:
 private:
     void Update(const float delta_seconds);
     void Render();
-    void ProcessEvents();
+    void ProcessPlatformEvents();
 
     CTimer timer;
     std::unique_ptr<IWindow> window;

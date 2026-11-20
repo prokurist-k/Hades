@@ -2,6 +2,7 @@
 
 #include "Log.h"
 #include <cstdio>
+#include <string>
 
 namespace Hades
 {
@@ -18,6 +19,9 @@ class CConsoleSink : public ILogSink
 public:
     virtual bool IsValid() const override;
     virtual void Log(const ELogLevel level, const char* message) override;
+
+private:
+    std::string name;
 };
 
 class CFileSink : public ILogSink
@@ -30,5 +34,6 @@ public:
 
 private:
     FILE* file;
+    std::string name;
 };
 }

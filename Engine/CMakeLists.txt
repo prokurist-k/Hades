@@ -16,14 +16,19 @@ add_library(HadesEngine STATIC
     Source/Platform/Keyboard.cpp
     Source/Platform/Linux/LinuxPlatformUtils.cpp
     Source/Platform/Linux/LinuxWindow.cpp
+    Source/Renderer/Renderer.h
+    Source/Renderer/Vulkan/VulkanRenderer.h
+    Source/Renderer/Vulkan/VulkanRenderer.cpp
     Source/Utility/Paths.cpp
 )
 
 find_package(X11 REQUIRED)
+find_package(Vulkan REQUIRED)
 
 target_link_libraries(HadesEngine
     PRIVATE
         X11::X11
+        Vulkan::Vulkan
 )
 
 target_include_directories(HadesEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

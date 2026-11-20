@@ -1,8 +1,10 @@
 #include "../PlatformUtils.h"
 #include "LinuxWindow.h"
 #include "Source/Core/Logging/Log.h"
+#include "Source/Platform/PlatformEvents.h"
 #include <X11/X.h>
 #include <X11/Xlib.h>
+#include <cstdint>
 #include <vector>
 
 namespace Hades
@@ -26,10 +28,13 @@ bool CLinuxWindow::Initialize()
 void CLinuxWindow::Shutdown()
 {
     is_open = false;
-    if (display)
+    if (display && window)
     {
         XDestroyWindow(display, window);
         XCloseDisplay(display);
+
+        display = nullptr;
+        window = 0;
     }
 }
 
@@ -63,6 +68,9 @@ void CLinuxWindow::ProcessEvents(std::vector<Event>& events)
             break;
         case KeyRelease:
             events.push_back(SKeyReleased { CPlatformUtils::TranslateKeyCode(event.xkey.keycode) });
+            break;
+        case ConfigureNotify:
+            events.push_back(SWindowResized { static_cast<uint32_t>(event.xconfigure.width), static_cast<uint32_t>(event.xconfigure.height) });
             break;
         }
     }

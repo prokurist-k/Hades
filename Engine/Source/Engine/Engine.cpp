@@ -66,14 +66,14 @@ void CEngine::Update(const float delta_seconds)
 {
     events.clear();
     window->ProcessEvents(events);
-    ProcessEvents();
+    ProcessPlatformEvents();
 }
 
 void CEngine::Render()
 {
 }
 
-void CEngine::ProcessEvents()
+void CEngine::ProcessPlatformEvents()
 {
     for (const auto& e : events)
     {
@@ -89,6 +89,10 @@ void CEngine::ProcessEvents()
         else if (const auto k = std::get_if<SKeyReleased>(&e))
         {
             HADES_LOG(Log, "Key %s released", KeyToString(k->key).c_str())
+        }
+        else if (const auto k = std::get_if<SWindowResized>(&e))
+        {
+            UNUSED(k)
         }
     }
 }

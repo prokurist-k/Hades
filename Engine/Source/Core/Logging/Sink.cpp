@@ -8,7 +8,6 @@
 
 namespace Hades
 {
-
 bool CConsoleSink::IsValid() const
 {
     return true;

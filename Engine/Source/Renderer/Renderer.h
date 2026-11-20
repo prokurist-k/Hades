@@ -1,5 +1,7 @@
 #pragma once
 
+namespace Hades
+{
 class IRenderer
 {
 public:
@@ -11,3 +13,4 @@ public:
     virtual void Render() = 0;
     virtual void Resize(const int width, const int height) = 0;
 };
+}

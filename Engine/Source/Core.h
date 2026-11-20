@@ -2,6 +2,7 @@
 
 // ToDo: Move to definitions
 #define HADES_ENABLE_ASSERTS
+#define HADES_DEBUG
 
 #ifdef HADES_ENABLE_ASSERTS
 
